@@ -32,6 +32,10 @@
 $ npm install
 ```
 
+# create new module
+
+$ nest g resource admin
+
 ## Running the app
 
 ```bash
