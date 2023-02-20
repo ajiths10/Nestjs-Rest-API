@@ -23,18 +23,34 @@ export class UserService {
   }
 
   findAll() {
-    return `This action returns all user`;
+    return this.userRepository.find({
+      where: {
+        is_active: 1,
+      },
+      take: 10,
+      order: {
+        // username: "DESC",
+        id: 'ASC',
+      },
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} user`;
+    return this.userRepository.findOne({
+      where: {
+        id,
+        is_active: 1,
+      },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.userRepository.update({ id }, { ...updateUserDto });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    // return this.userRepository.delete({ id }); // delete user where id == id
+
+    return this.userRepository.update({ id }, { is_active: 0 }); // instead of deleting change the is_active flag to zero
   }
 }

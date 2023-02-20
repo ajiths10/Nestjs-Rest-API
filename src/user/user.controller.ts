@@ -29,22 +29,69 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    try {
+      let res = await this.userService.findAll();
+      return res;
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error.message,
+      };
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id') id: number) {
+    try {
+      let res: any = await this.userService.findOne(+id);
+      console.log(res);
+      if (res) {
+        return res;
+      } else {
+        throw new Error('No user id found!!');
+      }
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error.message,
+      };
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    try {
+      let res: any = await this.userService.update(+id, updateUserDto);
+      console.log(res);
+      if (res) {
+        return res;
+      } else {
+        throw new Error('No user id found!!');
+      }
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error.message,
+      };
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      let res: any = this.userService.remove(+id);
+      console.log(res);
+      if (res) {
+        return res;
+      } else {
+        throw new Error('No user id found!!');
+      }
+    } catch (error) {
+      return {
+        status: 'error',
+        message: error.message,
+      };
+    }
   }
 }
