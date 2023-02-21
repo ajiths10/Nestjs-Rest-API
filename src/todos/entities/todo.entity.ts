@@ -1,24 +1,19 @@
-import { Todo } from 'src/todos/entities/todo.entity';
+import { Users } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { CutomUsers } from './customusers.entity';
 
-@Entity({ name: 'users' })
-export class Users {
+@Entity()
+export class Todo {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  username: string;
-
-  @Column({ unique: true, type: 'text' })
-  email: string;
+  todo: string;
 
   @Column({ nullable: true, type: 'timestamp' })
   created_at?: Date;
@@ -29,7 +24,7 @@ export class Users {
   @Column({ default: 1, nullable: true })
   is_active?: number;
 
-  @OneToOne(() => CutomUsers)
+  @ManyToOne(() => Users)
   @JoinColumn()
-  custom_user: CutomUsers;
+  user: Users;
 }

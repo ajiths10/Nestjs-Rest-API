@@ -67,7 +67,6 @@ export class UserService {
 
   remove(id: number) {
     // return this.userRepository.delete({ id }); // delete user where id == id
-
     return this.userRepository.update({ id }, { is_active: 0 }); // instead of deleting change the is_active flag to zero
   }
 }
