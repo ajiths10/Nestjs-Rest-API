@@ -35,6 +35,7 @@ $ npm install
 # create new module
 
 $ nest g resource admin
+nest g guard auth // create a middleware
 
 ## Running the app
 
