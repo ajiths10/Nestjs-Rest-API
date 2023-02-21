@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { CutomUsers } from './customusers.entity';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -19,4 +26,8 @@ export class Users {
 
   @Column({ default: 1, nullable: true })
   is_active?: number;
+
+  @OneToOne(() => CutomUsers)
+  @JoinColumn()
+  custom_user: CutomUsers;
 }

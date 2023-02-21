@@ -3,23 +3,42 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { CutomUsers } from './entities/customusers.entity';
 import { Users } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(Users) private userRepository: Repository<Users>,
+    @InjectRepository(CutomUsers)
+    private cUserRepository: Repository<CutomUsers>,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const current_dateTime = new Date();
+    try {
+      const current_dateTime = new Date();
 
-    const newUser = this.userRepository.create({
-      ...createUserDto,
-      created_at: current_dateTime,
-    });
+      const newUser = this.userRepository.create({
+        email: createUserDto.email,
+        username: createUserDto.username,
+        created_at: current_dateTime,
+      });
 
-    return this.userRepository.save(newUser);
+      let res = await this.userRepository.save(newUser);
+      console.log(res);
+      const customuser = this.cUserRepository.create({
+        user_id: res.id,
+        firstname: createUserDto.firstname,
+        lastname: createUserDto.lastname,
+        age: createUserDto.age,
+      });
+      await this.cUserRepository.save(customuser);
+      newUser.custom_user = customuser;
+      return this.userRepository.save(newUser);
+    } catch (error) {
+      console.log(error.message);
+      return;
+    }
   }
 
   findAll() {
@@ -37,10 +56,8 @@ export class UserService {
 
   findOne(id: number) {
     return this.userRepository.findOne({
-      where: {
-        id,
-        is_active: 1,
-      },
+      where: { id },
+      relations: ['custom_user'],
     });
   }
 
