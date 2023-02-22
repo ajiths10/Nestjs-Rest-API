@@ -37,7 +37,7 @@ export class UserService {
       return this.userRepository.save(newUser);
     } catch (error) {
       console.log(error.message);
-      return;
+      return error.message;
     }
   }
 

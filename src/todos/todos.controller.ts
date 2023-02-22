@@ -11,7 +11,8 @@ import {
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { User } from 'src/auth/auth-user.decorator';
 
 @Controller('todos')
 export class TodosController {
@@ -23,9 +24,9 @@ export class TodosController {
   }
 
   @Get()
-  @UseGuards(AuthGuard)
-  findAll() {
-    return this.todosService.findAll();
+  @UseGuards(JwtAuthGuard)
+  findAll(@User() user) {
+    return this.todosService.findAll(user);
   }
 
   @Get(':id')

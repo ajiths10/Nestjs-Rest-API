@@ -24,7 +24,6 @@ export class Todo {
   @Column({ default: 1, nullable: true })
   is_active?: number;
 
-  @ManyToOne(() => Users)
-  @JoinColumn()
+  @ManyToOne(() => Users, (user) => user.id)
   user: Users;
 }
