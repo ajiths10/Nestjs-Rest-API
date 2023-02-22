@@ -1,1 +1,4 @@
-export class CreateTodoDto {}
+export class CreateTodoDto {
+  user_id: number;
+  todo: string;
+}

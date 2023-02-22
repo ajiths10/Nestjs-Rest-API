@@ -19,12 +19,15 @@ export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todosService.create(createTodoDto);
+  async create(@Body() createTodoDto: CreateTodoDto) {
+    try {
+      return await this.todosService.create(createTodoDto);
+    } catch (error) {
+      return error.message;
+    }
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   findAll(@User() user) {
     return this.todosService.findAll(user);
   }
@@ -35,11 +38,13 @@ export class TodosController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
     return this.todosService.update(+id, updateTodoDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.todosService.remove(+id);
   }
