@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class AuthService {
@@ -22,5 +23,10 @@ export class AuthService {
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
+  }
+
+  @Cron('0 * * * * *') // runs every one minute interval
+  handleCron() {
+    console.log('loggerrrr');
   }
 }
