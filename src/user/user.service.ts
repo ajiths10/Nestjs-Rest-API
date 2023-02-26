@@ -27,14 +27,12 @@ export class UserService {
       let res = await this.userRepository.save(newUser);
       console.log(res);
       const customuser = this.cUserRepository.create({
-        user_id: res.id,
         firstname: createUserDto.firstname,
         lastname: createUserDto.lastname,
         age: createUserDto.age,
+        user: res,
       });
-      await this.cUserRepository.save(customuser);
-      newUser.custom_user = customuser;
-      return this.userRepository.save(newUser);
+      return this.cUserRepository.save(customuser);
     } catch (error) {
       console.log(error.message);
       return error.message;
@@ -55,9 +53,9 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this.userRepository.findOne({
+    return this.cUserRepository.findOne({
       where: { id },
-      relations: ['custom_user'],
+      relations: ['user'],
     });
   }
 

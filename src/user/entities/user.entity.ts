@@ -29,7 +29,6 @@ export class Users {
   @Column({ default: 1, nullable: true })
   is_active?: number;
 
-  @OneToOne(() => CutomUsers)
-  @JoinColumn()
+  @OneToOne(() => CutomUsers, (u) => u.id)
   custom_user: CutomUsers;
 }

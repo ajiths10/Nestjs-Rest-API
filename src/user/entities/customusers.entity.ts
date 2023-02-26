@@ -1,12 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Users } from './user.entity';
 
-@Entity({ name: 'cutom_users' })
+@Entity({ name: 'custom_users' })
 export class CutomUsers {
   @PrimaryGeneratedColumn({ type: 'tinyint' })
   id: number;
-
-  @Column({ unique: true, type: 'tinyint' })
-  user_id: number;
 
   @Column()
   firstname: string;
@@ -16,4 +20,12 @@ export class CutomUsers {
 
   @Column({ type: 'tinyint' })
   age: number;
+
+  @OneToOne(() => Users, (u) => u.id, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: Users;
 }
