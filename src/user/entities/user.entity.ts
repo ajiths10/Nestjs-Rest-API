@@ -23,6 +23,9 @@ export class Users {
   @Column()
   last_name: string;
 
+  @Column({ type: 'text' })
+  password: string;
+
   @Column({ unique: true, type: 'text' })
   email: string;
 

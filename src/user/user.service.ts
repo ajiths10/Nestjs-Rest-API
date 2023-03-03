@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CryptoService } from 'src/crypto/crypto.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,6 +13,7 @@ export class UserService {
     @InjectRepository(Users) private userRepository: Repository<Users>,
     @InjectRepository(CutomUsers)
     private cUserRepository: Repository<CutomUsers>,
+    private readonly cryptoService: CryptoService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -28,6 +30,9 @@ export class UserService {
           message: 'user already exists',
         });
       }
+      let hash = await this.cryptoService.encryptPassword(
+        createUserDto.password,
+      );
       const current_dateTime = new Date();
 
       //users table entry
@@ -36,14 +41,17 @@ export class UserService {
       newUser.first_name = createUserDto.first_name;
       newUser.last_name = createUserDto.last_name;
       newUser.created_at = current_dateTime;
-
+      newUser.password = hash as string;
       //custom users table entry
       let res = await this.userRepository.save(newUser);
       const customuser = new CutomUsers();
       customuser.age = createUserDto.age;
       customuser.user = res;
 
-      return this.cUserRepository.save(customuser);
+      let cuserRes = await this.cUserRepository.save(customuser);
+      delete cuserRes.user.password;
+
+      return cuserRes;
     } catch (error) {
       console.log(error.message);
       return error.message;

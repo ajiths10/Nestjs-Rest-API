@@ -10,6 +10,7 @@ import { TodosModule } from './todos/todos.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
+import { CryptoModule } from './crypto/crypto.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthModule } from './auth/auth.module';
     AdminModule,
     TodosModule,
     AuthModule,
+    CryptoModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
