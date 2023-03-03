@@ -12,7 +12,7 @@ export default new ConnectionOptions.DataSource({
   username: configSerive.get('DATABASE_USER_NAME'),
   password: configSerive.get('DATABASE_USER_PASSWORD'),
   database: configSerive.get('DATABASE_NAME'),
-  entities: ['dist/**/*.entity{.ts,.js}'],
+  entities: ['dist/src/**/**/*.entity{.ts,.js}'],
 
   // We are using migrations, synchronize should be set to false.
   synchronize: false,

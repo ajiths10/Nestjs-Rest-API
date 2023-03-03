@@ -12,12 +12,6 @@ export class CutomUsers {
   @PrimaryGeneratedColumn({ type: 'tinyint' })
   id: number;
 
-  @Column()
-  firstname: string;
-
-  @Column()
-  lastname: string;
-
   @Column({ type: 'tinyint' })
   age: number;
 

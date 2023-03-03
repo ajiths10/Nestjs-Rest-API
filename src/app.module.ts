@@ -26,7 +26,7 @@ import { AuthModule } from './auth/auth.module';
         database: configService.get<string>('DATABASE_NAME'),
         // entities: [Users],
         autoLoadEntities: true,
-        // synchronize: true,
+        synchronize: true,
       }),
     }),
     UserModule,

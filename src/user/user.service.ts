@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,22 +16,33 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
     try {
+      const checkUser = await this.userRepository.findOne({
+        where: {
+          email: createUserDto.email,
+        },
+      });
+
+      if (checkUser) {
+        return new ConflictException({
+          status: false,
+          message: 'user already exists',
+        });
+      }
       const current_dateTime = new Date();
 
-      const newUser = this.userRepository.create({
-        email: createUserDto.email,
-        username: createUserDto.username,
-        created_at: current_dateTime,
-      });
+      //users table entry
+      const newUser = new Users();
+      newUser.email = createUserDto.email;
+      newUser.first_name = createUserDto.first_name;
+      newUser.last_name = createUserDto.last_name;
+      newUser.created_at = current_dateTime;
 
+      //custom users table entry
       let res = await this.userRepository.save(newUser);
-      console.log(res);
-      const customuser = this.cUserRepository.create({
-        firstname: createUserDto.firstname,
-        lastname: createUserDto.lastname,
-        age: createUserDto.age,
-        user: res,
-      });
+      const customuser = new CutomUsers();
+      customuser.age = createUserDto.age;
+      customuser.user = res;
+
       return this.cUserRepository.save(customuser);
     } catch (error) {
       console.log(error.message);
