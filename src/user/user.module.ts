@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/user.entity';
 import { CutomUsers } from './entities/customusers.entity';
 import { CryptoModule } from 'src/crypto/crypto.module';
+import { ResponseHandlerModule } from 'src/response_handler/response_handler.module';
 
 @Module({
-  imports: [CryptoModule, TypeOrmModule.forFeature([Users, CutomUsers])],
+  imports: [
+    CryptoModule,
+    ResponseHandlerModule,
+    TypeOrmModule.forFeature([Users, CutomUsers]),
+  ],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],

@@ -1,6 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CryptoService } from 'src/crypto/crypto.service';
+import { ResponseHandlerService } from 'src/response_handler/response_handler.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,8 +13,9 @@ export class UserService {
   constructor(
     @InjectRepository(Users) private userRepository: Repository<Users>,
     @InjectRepository(CutomUsers)
-    private cUserRepository: Repository<CutomUsers>,
+    private readonly cUserRepository: Repository<CutomUsers>,
     private readonly cryptoService: CryptoService,
+    private readonly responseService: ResponseHandlerService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -42,6 +44,7 @@ export class UserService {
       newUser.last_name = createUserDto.last_name;
       newUser.created_at = current_dateTime;
       newUser.password = hash as string;
+
       //custom users table entry
       let res = await this.userRepository.save(newUser);
       const customuser = new CutomUsers();
@@ -51,10 +54,13 @@ export class UserService {
       let cuserRes = await this.cUserRepository.save(customuser);
       delete cuserRes.user.password;
 
-      return cuserRes;
+      return this.responseService.successResponse(
+        'User signup completed, Please login to continue.',
+        cuserRes,
+      );
     } catch (error) {
       console.log(error.message);
-      return error.message;
+      return this.responseService.errorResponse(error.message);
     }
   }
 

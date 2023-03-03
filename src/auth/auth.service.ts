@@ -27,6 +27,6 @@ export class AuthService {
 
   @Cron('0 * * * * *') // runs every one minute interval
   handleCron() {
-    console.log('loggerrrr');
+    console.log('loggerrrr', new Date());
   }
 }

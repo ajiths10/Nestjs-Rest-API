@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 @Injectable()
 export class CryptoService {
-  CRYPTO_BCRYPT_SALT: number;
+  private CRYPTO_BCRYPT_SALT: number;
 
   constructor(private readonly configService: ConfigService) {
     this.CRYPTO_BCRYPT_SALT = this.configService.get('CRYPTO_BCRYPT_SALT');

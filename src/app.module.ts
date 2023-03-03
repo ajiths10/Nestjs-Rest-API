@@ -11,6 +11,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { CryptoModule } from './crypto/crypto.module';
+import { ResponseHandlerModule } from './response_handler/response_handler.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { CryptoModule } from './crypto/crypto.module';
     TodosModule,
     AuthModule,
     CryptoModule,
+    ResponseHandlerModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],
