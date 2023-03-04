@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class CryptoService {
   private CRYPTO_BCRYPT_SALT: number;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private jwtService: JwtService,
+  ) {
     this.CRYPTO_BCRYPT_SALT = this.configService.get('CRYPTO_BCRYPT_SALT');
   }
 
@@ -26,7 +30,7 @@ export class CryptoService {
   }
 
   //decrypt Password using bcrypt
-  decryptPassword(password, hash) {
+  decryptPassword(password: string, hash: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, hash, function (err, result) {
         // result == true
@@ -40,7 +44,7 @@ export class CryptoService {
   }
 
   //Generate Token Secret random Keys
-  GenerateSecretKey(id) {
+  GenerateSecretKey() {
     return new Promise((resolve, reject) => {
       let secret_key = require('crypto').randomBytes(64).toString('hex');
       // console.log("key==> ", secret_key);
@@ -49,17 +53,18 @@ export class CryptoService {
   }
 
   //Generate JWT Token for  Authentication
-  GenerateJWTToken(id) {
-    return new Promise((resolve, reject) => {
-      let token = jwt.sign({ id: id }, process.env.TOKEN_SECRET, {
-        expiresIn: '93600s',
-      });
-      resolve(token);
-    });
+  GenerateJWTToken(id: number) {
+    return this.jwtService.sign(
+      { id: id },
+      {
+        expiresIn: process.env.TOKEN_EXPIRATION,
+        secret: process.env.TOKEN_SECRET,
+      },
+    );
   }
 
   //verify JWT Token for  Authentication
-  VerifyJWTToken(token) {
+  VerifyJWTToken(token: string) {
     return new Promise((resolve, reject) => {
       if (token == null) return reject();
 
