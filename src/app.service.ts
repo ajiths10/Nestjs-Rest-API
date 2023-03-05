@@ -13,4 +13,8 @@ export class AppService {
   GetUserProtected(user): any {
     return { message: 'Happy User!', data: user };
   }
+
+  AdminProtected(user): any {
+    return { message: 'Hello admin User!', data: user };
+  }
 }

@@ -38,6 +38,9 @@ export class Users {
   @Column({ default: 1, nullable: true })
   is_active?: number;
 
+  @Column({ default: false })
+  is_admin: boolean;
+
   @OneToOne(() => CutomUsers, (u) => u.id)
   custom_user: CutomUsers;
 }
