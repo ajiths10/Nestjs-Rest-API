@@ -18,7 +18,6 @@ import { ResponseHandlerModule } from './response_handler/response_handler.modul
     ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: configService.get<'mysql'>('DATABASE_TYPE'), // hard code type mysql (temp)
         host: configService.get<string>('DATABASE_LOCALHOST'),
@@ -28,8 +27,10 @@ import { ResponseHandlerModule } from './response_handler/response_handler.modul
         database: configService.get<string>('DATABASE_NAME'),
         // entities: [Users],
         autoLoadEntities: true,
-        synchronize: true,
+        // migrationsRun: true,
+        //synchronize: true,
       }),
+      inject: [ConfigService],
     }),
     UserModule,
     AdminModule,
@@ -38,7 +39,7 @@ import { ResponseHandlerModule } from './response_handler/response_handler.modul
     CryptoModule,
     ResponseHandlerModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

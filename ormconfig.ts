@@ -22,7 +22,7 @@ export default new ConnectionOptions.DataSource({
 
   migrations: ['dist/src/migrations/*{.ts,.js}'],
   cli: {
-    migrationsDir: './src/migrations',
+    migrationsDir: 'src/migrations',
   },
   migrationsTableName: 'typeorm_migrations',
 });
