@@ -6,12 +6,13 @@ import { Users } from './entities/user.entity';
 import { CutomUsers } from './entities/customusers.entity';
 import { CryptoModule } from 'src/crypto/crypto.module';
 import { ResponseHandlerModule } from 'src/response_handler/response_handler.module';
+import { Event } from 'src/event/entities/event.entity';
 
 @Module({
   imports: [
     CryptoModule,
     ResponseHandlerModule,
-    TypeOrmModule.forFeature([Users, CutomUsers]),
+    TypeOrmModule.forFeature([Users, CutomUsers, Event]),
   ],
   controllers: [UserController],
   providers: [UserService],

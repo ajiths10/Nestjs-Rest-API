@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { CutomUsers } from './customusers.entity';
+import { Event } from 'src/event/entities/event.entity';
 
 @Entity({ name: 'users' })
 export class Users {
@@ -43,4 +45,7 @@ export class Users {
 
   @OneToOne(() => CutomUsers, (u) => u.id)
   custom_user: CutomUsers;
+
+  @OneToMany(() => Event, (event) => event.user)
+  event: Event[];
 }

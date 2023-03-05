@@ -12,6 +12,7 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { CryptoModule } from './crypto/crypto.module';
 import { ResponseHandlerModule } from './response_handler/response_handler.module';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { ResponseHandlerModule } from './response_handler/response_handler.modul
         // entities: [Users],
         autoLoadEntities: true,
         // migrationsRun: true,
-        //synchronize: true,
+        // synchronize: true,
       }),
       inject: [ConfigService],
     }),
@@ -38,6 +39,7 @@ import { ResponseHandlerModule } from './response_handler/response_handler.modul
     AuthModule,
     CryptoModule,
     ResponseHandlerModule,
+    EventModule,
   ],
   controllers: [AppController],
   providers: [AppService],
