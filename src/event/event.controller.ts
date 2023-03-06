@@ -13,6 +13,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/auth/auth-user.decorator';
+import { FindAllEventDto } from './dto/find-all-events.dto';
 
 @Controller('event')
 export class EventController {
@@ -24,9 +25,9 @@ export class EventController {
     return this.eventService.create(createEventDto, User);
   }
 
-  @Get()
-  findAll() {
-    return this.eventService.findAll();
+  @Post('/all')
+  findAll(@Body() findAllEventDto: FindAllEventDto) {
+    return this.eventService.findAll(findAllEventDto);
   }
 
   @Get(':id')
