@@ -1,9 +1,15 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class FindAllEventDto {
-  @IsBoolean()
-  is_featured: boolean;
+  @IsOptional()
+  filter: any;
 
   @IsNumber()
   @IsNotEmpty()

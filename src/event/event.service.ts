@@ -1,9 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseHandlerService } from 'src/response_handler/response_handler.service';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { FindAllEventDto } from './dto/find-all-events.dto';
+import { GetOneEventDto } from './dto/getone-event-dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { Event } from './entities/event.entity';
 
@@ -32,20 +37,26 @@ export class EventService {
   async findAll(findAllEventDto: FindAllEventDto) {
     let where = {
       where: {
-        is_featured: findAllEventDto.is_featured,
+        ...findAllEventDto.filter,
       },
       take: findAllEventDto.limit,
       skip: findAllEventDto.page,
     };
     let evensts = await this.eventsRepository.find(where);
+
     return this.reaponseService.successResponse(
       'Events fetch success',
       evensts,
     );
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
+  async findOne(id: number) {
+    let data = await this.eventsRepository.findBy({ id });
+    if (!data.length) {
+      throw new NotFoundException();
+    }
+
+    return this.reaponseService.successResponse('Event fetched', data);
   }
 
   update(id: number, updateEventDto: UpdateEventDto) {
