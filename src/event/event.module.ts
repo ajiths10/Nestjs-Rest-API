@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from 'src/user/entities/user.entity';
 import { Event } from './entities/event.entity';
 import { ResponseHandlerModule } from 'src/response_handler/response_handler.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [ResponseHandlerModule, TypeOrmModule.forFeature([Users, Event])],
+  imports: [
+    AuthModule,
+    ResponseHandlerModule,
+    TypeOrmModule.forFeature([Users, Event]),
+  ],
   controllers: [EventController],
   providers: [EventService],
   exports: [EventService],

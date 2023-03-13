@@ -14,13 +14,14 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from 'src/auth/auth-user.decorator';
 import { FindAllEventDto } from './dto/find-all-events.dto';
+import { AdminGuard } from 'src/auth/auth-admin.guard';
 
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AdminGuard)
   create(@Body() createEventDto: CreateEventDto, @User() User) {
     return this.eventService.create(createEventDto, User);
   }
