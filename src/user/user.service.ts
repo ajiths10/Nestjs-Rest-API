@@ -27,10 +27,9 @@ export class UserService {
       });
 
       if (checkUser) {
-        return new ConflictException({
-          status: false,
-          message: 'user already exists',
-        });
+        return this.responseService.errorResponse(
+          'email address already exists',
+        );
       }
       let hash = await this.cryptoService.encryptPassword(
         createUserDto.password,
