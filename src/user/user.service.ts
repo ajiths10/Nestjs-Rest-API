@@ -64,6 +64,7 @@ export class UserService {
   }
 
   findAll() {
+    console.log(this.passwordGenerate());
     return this.userRepository.find({
       where: {
         is_active: 1,
@@ -101,5 +102,9 @@ export class UserService {
       where: where,
       //  relations: ['custom_user'],
     });
+  }
+
+  passwordGenerate() {
+    return this.cryptoService.passwordGenerator();
   }
 }

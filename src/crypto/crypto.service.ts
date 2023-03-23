@@ -3,6 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
+//import  generate  from 'password-pool';
+const Gernetate = require('password-pool');
 
 @Injectable()
 export class CryptoService {
@@ -73,5 +75,9 @@ export class CryptoService {
         resolve(user);
       });
     });
+  }
+
+  passwordGenerator() {
+    return Gernetate();
   }
 }

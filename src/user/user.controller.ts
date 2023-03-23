@@ -94,4 +94,9 @@ export class UserController {
       };
     }
   }
+
+  @Post('password')
+  passwordGenerate() {
+    this.userService.passwordGenerate();
+  }
 }
